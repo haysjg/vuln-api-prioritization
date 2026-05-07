@@ -1,0 +1,126 @@
+{
+  "_comment": "Configuration file for CVE prioritization scoring weights",
+  "_description": "Adjust these weights to customize your prioritization strategy",
+
+  "scoring_weights": {
+    "cvss_weight": 10,
+    "_cvss_weight_description": "Multiplier for CVSS base score (0-10). Default: 10 -> max 100 points",
+
+    "expert_rating_weight": 80,
+    "_expert_rating_weight_description": "Multiplier for CrowdStrike Expert Rating (0-100). Default: 80 -> max 80 points. HIGHLY RECOMMENDED to keep this high as it incorporates CTI analysis.",
+
+    "exploit_status_weight": 30,
+    "_exploit_status_weight_description": "Points per exploit status level (0-4). Default: 30 -> max 120 points",
+
+    "hosts_affected_weight": 0.5,
+    "_hosts_affected_weight_description": "Points per affected host. Default: 0.5",
+
+    "asset_criticality_weight": 50,
+    "_asset_criticality_weight_description": "Bonus points for critical assets. Default: 50 -> max 100 points",
+
+    "age_weight": 0.1,
+    "_age_weight_description": "Points per day since publication. Default: 0.1"
+  },
+
+  "critical_asset_indicators": {
+    "_description": "Strings to identify critical assets (case-insensitive)",
+
+    "groups": [
+      "production",
+      "prod",
+      "critical",
+      "dmz",
+      "domain-controllers",
+      "dc",
+      "pci",
+      "financial",
+      "payment",
+      "database",
+      "db-servers",
+      "web-servers",
+      "public-facing"
+    ],
+
+    "tags": [
+      "crown-jewels",
+      "tier-0",
+      "tier-1",
+      "pci-dss",
+      "sox",
+      "hipaa",
+      "gdpr",
+      "critical",
+      "production",
+      "high-value",
+      "customer-data",
+      "financial-data"
+    ]
+  },
+
+  "filtering": {
+    "_description": "Default filtering options",
+
+    "min_cvss_score": 0.0,
+    "_min_cvss_score_description": "Minimum CVSS score to include (0.0-10.0)",
+
+    "severities": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+    "_severities_description": "Severity levels to include (remove to filter out)",
+
+    "exploit_status_threshold": 0,
+    "_exploit_status_threshold_description": "Minimum exploit status (0=any, 1=PoC exists, 2=public exploit, 3=active, 4=widespread)"
+  },
+
+  "examples": {
+    "_description": "Example configurations for different prioritization strategies",
+
+    "aggressive": {
+      "_description": "Focus heavily on exploited CVEs, expert ratings, and critical assets",
+      "cvss_weight": 8,
+      "expert_rating_weight": 100,
+      "exploit_status_weight": 40,
+      "hosts_affected_weight": 0.3,
+      "asset_criticality_weight": 70,
+      "age_weight": 0.15
+    },
+
+    "balanced": {
+      "_description": "Balanced approach with strong expert rating influence (default)",
+      "cvss_weight": 10,
+      "expert_rating_weight": 80,
+      "exploit_status_weight": 30,
+      "hosts_affected_weight": 0.5,
+      "asset_criticality_weight": 50,
+      "age_weight": 0.1
+    },
+
+    "exposure_focused": {
+      "_description": "Prioritize vulnerabilities affecting many hosts, still respect expert ratings",
+      "cvss_weight": 10,
+      "expert_rating_weight": 60,
+      "exploit_status_weight": 20,
+      "hosts_affected_weight": 1.5,
+      "asset_criticality_weight": 30,
+      "age_weight": 0.05
+    },
+
+    "severity_only": {
+      "_description": "Traditional CVSS-based prioritization with minimal expert rating influence",
+      "cvss_weight": 20,
+      "expert_rating_weight": 20,
+      "exploit_status_weight": 5,
+      "hosts_affected_weight": 0.1,
+      "asset_criticality_weight": 10,
+      "age_weight": 0.05
+    },
+
+    "cti_driven": {
+      "_description": "Maximum weight on CrowdStrike CTI (Expert Rating and Exploitation Status)",
+      "cvss_weight": 5,
+      "expert_rating_weight": 120,
+      "exploit_status_weight": 50,
+      "hosts_affected_weight": 0.3,
+      "asset_criticality_weight": 40,
+      "age_weight": 0.1
+    }
+  }
+}
